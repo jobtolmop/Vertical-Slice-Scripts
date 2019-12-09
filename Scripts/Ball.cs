@@ -6,13 +6,22 @@ public class Ball : MonoBehaviour
 {
     private bool isPressed;
 
+    private float explosionDelay = 0.2f;
+
     [SerializeField] private Rigidbody2D rb;
 
     [SerializeField] private Rigidbody2D swing;
 
-    [SerializeField] private float releaseTime = .15f;
+    [SerializeField] private float releaseTime = 0.15f;
 
-    [SerializeField] private float maxDragDistance = 4f;
+    [SerializeField] private float maxDragDistance = 4.0f;
+
+    [SerializeField] private Animator boom;
+
+    private void Start()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
     private void Update()
     {
@@ -28,7 +37,6 @@ public class Ball : MonoBehaviour
             {
                 rb.position = mousePos;
             }
-
         }
     }
 
@@ -48,12 +56,25 @@ public class Ball : MonoBehaviour
         StartCoroutine(Release());
     }
 
+    void OnCollisionEnter2D()
+    {
+        StartCoroutine("ExplosionDelay");
+        boom.Play("birdExplode");
+            
+    }
+
+    private IEnumerator ExplosionDelay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        transform.GetChild(0).gameObject.SetActive(true);
+        Destroy(gameObject, explosionDelay);
+    }
+
     IEnumerator Release()
     {
         yield return new WaitForSeconds(releaseTime);
 
         GetComponent<SpringJoint2D>().enabled = false;
-
-        this.enabled = false;
     }
 }
