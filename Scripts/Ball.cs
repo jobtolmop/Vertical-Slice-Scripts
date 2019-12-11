@@ -16,11 +16,16 @@ public class Ball : MonoBehaviour
 
     [SerializeField] private float maxDragDistance = 4.0f;
 
+    /*[SerializeField] private LineRenderer swingLineFront;
+
+    [SerializeField] private LineRenderer swingLineBack;*/
+
     [SerializeField] private Animator boom;
 
     private void Start()
     {
         transform.GetChild(0).gameObject.SetActive(false);
+        //LineRendererSetup();
     }
 
     private void Update()
@@ -56,10 +61,23 @@ public class Ball : MonoBehaviour
         StartCoroutine(Release());
     }
 
+    /*private void LineRendererSetup()
+    {
+        swingLineFront.SetPosition(0, swingLineFront.transform.position);
+        swingLineBack.SetPosition(0, swingLineBack.transform.position);
+
+        swingLineFront.sortingLayerName = "Foreground";
+        swingLineBack.sortingLayerName = "Foreground";
+
+        swingLineFront.sortingOrder = 5;
+        swingLineBack.sortingOrder = 3;
+    }*/
+
     void OnCollisionEnter2D()
     {
         StartCoroutine("ExplosionDelay");
         boom.Play("birdExplode");
+        GetComponent<TrailRenderer>().emitting = false;
             
     }
 

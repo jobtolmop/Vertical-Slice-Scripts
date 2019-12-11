@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,11 +9,22 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float maxHealth = 4;
 
+    [SerializeField] private GameObject text;
+
     [SerializeField] private int pointValue;
+
+    [SerializeField] private Animator destroyed;
 
     [SerializeField] private List<Sprite> sprites = new List<Sprite>();
 
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    
+    private enum type {WOOD, STONE};
+
+    private int scoreValue = 100;
+
+    [SerializeField] private type typeMat;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -20,6 +32,14 @@ public class Enemy : MonoBehaviour
         if (spriteRenderer.sprite == null)
         {
             spriteRenderer.sprite = sprites[0];
+        }
+    }
+
+    private void Update()
+    {
+        if (text != null)
+        {
+            text.transform.position = transform.position;
         }
     }
 
@@ -47,12 +67,31 @@ public class Enemy : MonoBehaviour
 
         if (health < 0)
         {
+            GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
+            text = Instantiate(canvas.GetComponent<ScoreManager>().PointTxt, canvas.transform, true);
+            text.transform.position = transform.position;
+            Destroy(text, 0.3f);
+            ScoreManager.instance.ScoreValue += scoreValue;
+            
+            
+
+           
+
+            if (typeMat == type.STONE)
+            {
+                GetComponent<Animator>().Play("SteenKapot");
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                GetComponent<BoxCollider2D>().enabled = false;
+            }
+
             Die();
+
+            
         }
         //Debug.Log(colInfo.relativeVelocity.magnitude);
     }
     private void Die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject,1);
     }
 }
