@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private SpriteRenderer spriteRenderer;
     
-    private enum type {WOOD, STONE};
+    private enum type {WOOD, STONE, PIG};
 
     private int scoreValue = 100;
 
@@ -78,6 +78,16 @@ public class Enemy : MonoBehaviour
                 GetComponent<Animator>().Play("SteenKapot");
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 GetComponent<BoxCollider2D>().enabled = false;
+            }
+            if (typeMat == type.WOOD)
+            {
+                GetComponent<Animator>().Play("HoutBalkKapot");
+                //GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                //GetComponent<BoxCollider2D>().enabled = false;
+            }
+            if (typeMat == type.PIG)
+            {
+                Die();
             }
             Die();
         }
