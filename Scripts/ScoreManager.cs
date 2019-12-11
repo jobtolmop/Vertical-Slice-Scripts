@@ -29,15 +29,15 @@ public class ScoreManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         score.text = "Score: " + scoreValue;
         highScore.text = "Highscore: 125000";
-        PlayerPrefs.Save();
+
+        if (score == null)
+        {
+            score = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(3).GetComponent<Text>();
+            highScore = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(4).GetComponent<Text>();
+        }
     }
 }

@@ -19,6 +19,7 @@ public class Pause : MonoBehaviour
     }
     public void Restart()
     {
+        ScoreManager.instance.ScoreValue = 0;
         SceneManager.LoadScene("SampleScene");
         Time.timeScale = 1f;
     }

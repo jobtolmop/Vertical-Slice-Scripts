@@ -68,14 +68,10 @@ public class Enemy : MonoBehaviour
         if (health < 0)
         {
             GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
-            text = Instantiate(canvas.GetComponent<ScoreManager>().PointTxt, canvas.transform, true);
+            text = Instantiate(ScoreManager.instance.PointTxt, canvas.transform, true);
             text.transform.position = transform.position;
             Destroy(text, 0.3f);
             ScoreManager.instance.ScoreValue += scoreValue;
-            
-            
-
-           
 
             if (typeMat == type.STONE)
             {
@@ -83,12 +79,8 @@ public class Enemy : MonoBehaviour
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 GetComponent<BoxCollider2D>().enabled = false;
             }
-
             Die();
-
-            
         }
-        //Debug.Log(colInfo.relativeVelocity.magnitude);
     }
     private void Die()
     {
